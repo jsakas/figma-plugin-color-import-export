@@ -19,7 +19,14 @@ module.exports = (env, argv) => ({
     ],
   },
 
-  resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js'] },
+  resolve: { 
+    extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    
+    alias: {
+      'react': path.resolve('./node_modules/react'),
+      'react-dom': path.resolve('./node_modules/react-dom'),
+    }
+  },
 
   output: {
     filename: '[name].js',

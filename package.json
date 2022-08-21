@@ -9,6 +9,9 @@
 		"prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,json}' "
 	},
 	"dependencies": {
+		"@emotion/react": "^11.10.0",
+		"@emotion/styled": "^11.10.0",
+		"@mui/joy": "^5.0.0-alpha.41",
 		"color": "^4.2.3",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"

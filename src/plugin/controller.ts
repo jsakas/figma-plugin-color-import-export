@@ -1,7 +1,11 @@
 import { MessageTypes, SetSelectedPaintStylesMessage } from '../types/messages';
 import { isRectangleNode } from '../utils/guards';
 
-figma.showUI(__html__);
+figma.showUI(__html__, {
+  width: 400,
+  height: 400,
+  themeColors: true,
+});
 
 figma.on('selectionchange', () => {
   const paintStyles = figma.getLocalPaintStyles();
