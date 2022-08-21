@@ -1,5 +1,5 @@
-import { MessageTypes, SetSelectedPaintStylesMessage } from '../types/messages';
-import { isRectangleNode } from '../utils/guards';
+import { MessageTypes, SetSelectedPaintStylesMessage } from 'declarations/messages';
+import { isRectangleNode } from 'utils/guards';
 
 figma.showUI(__html__, {
   width: 400,

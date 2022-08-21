@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "target": "es6",
     "outDir": "dist",
     "jsx": "react",

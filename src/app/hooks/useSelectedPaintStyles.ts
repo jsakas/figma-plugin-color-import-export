@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ParentMessage, MessageTypes } from '../../types/messages';
+import { ParentMessage, MessageTypes } from 'declarations/messages';
 
 export function useSelectedPaintStyles(): PaintStyle[] {
   const [selectedPaintStyles, setSelectedPaintStyles] = useState<PaintStyle[]>([]);

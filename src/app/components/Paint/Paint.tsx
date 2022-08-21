@@ -1,6 +1,6 @@
 import React from 'react';
 import Color from 'color';
-import { isSolidPaint } from '../../../utils/guards';
+import { isSolidPaint } from 'utils/guards';
 
 type PaintComponentProps = {
   paint: Paint;

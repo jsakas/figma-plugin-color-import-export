@@ -1,5 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 const path = require('path')
 
 module.exports = (env, argv) => ({
@@ -20,6 +22,10 @@ module.exports = (env, argv) => ({
   },
 
   resolve: { 
+    plugins: [
+      new TsconfigPathsPlugin(),
+    ],
+    
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
     
     alias: {
