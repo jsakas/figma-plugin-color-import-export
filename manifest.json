@@ -1,0 +1,10 @@
+{
+  "name": "Import / Export",
+  "id": "1142530597327634037",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": [
+    "figma"
+  ]
+}
