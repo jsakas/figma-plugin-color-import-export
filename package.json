@@ -9,11 +9,13 @@
 		"prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,json}' "
 	},
 	"dependencies": {
+		"color": "^4.2.3",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
 		"@figma/plugin-typings": "^1.50.0",
+		"@types/color": "^3.0.3",
 		"@types/react": "^18.0.17",
 		"@types/react-dom": "^18.0.6",
 		"css-loader": "^6.7.1",
