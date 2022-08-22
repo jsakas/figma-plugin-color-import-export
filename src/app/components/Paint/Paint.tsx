@@ -4,12 +4,12 @@ import { useColorScheme, useTheme } from '@mui/joy/styles';
 import { solidPaintToColor } from 'utils/color';
 
 type PaintComponentProps = {
-  paint: Paint;
+  paint: SolidPaint;
   style?: React.CSSProperties;
   className?: string;
 };
 
-export function Paint(props: PaintComponentProps): JSX.Element {
+export const Paint = React.forwardRef<HTMLDivElement, PaintComponentProps>((props, ref): JSX.Element => {
   const { mode } = useColorScheme();
   const theme = useTheme();
   const { paint, style = {}, className } = props;
@@ -28,24 +28,21 @@ export function Paint(props: PaintComponentProps): JSX.Element {
     return false;
   }, [paint]);
 
-  if (isSolidPaint(paint)) {
-    const backgroundColor = solidPaintToColor(paint).toString();
+  const backgroundColor = solidPaintToColor(paint).toString();
 
-    return (
-      <div
-        className={className}
-        style={{
-          width: 25,
-          height: 25,
-          borderRadius: '50%',
-          backgroundColor,
-          boxSizing: 'border-box',
-          border: shouldShowBorder ? `1px solid ${theme.palette.divider}` : 'none',
-          ...style,
-        }}
-      />
-    );
-  }
-
-  return null;
-}
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        width: 25,
+        height: 25,
+        borderRadius: '50%',
+        backgroundColor,
+        boxSizing: 'border-box',
+        border: shouldShowBorder ? `1px solid ${theme.palette.divider}` : 'none',
+        ...style,
+      }}
+    />
+  );
+});

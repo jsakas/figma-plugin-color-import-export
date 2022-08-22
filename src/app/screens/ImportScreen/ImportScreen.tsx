@@ -18,6 +18,7 @@ import { capitalCase } from 'change-case';
 
 import { theme } from 'utils/theme';
 import { CaseTypes, Case, CaseMap } from 'declarations/case';
+import Tooltip from '@mui/material/Tooltip';
 
 const exampleInput = {
   example_color: 'rgb(136, 136, 136)',
@@ -144,18 +145,21 @@ export function ImportScreen() {
           <Box display="grid" gridTemplateColumns="repeat(auto-fill, 25px)" gap="5px">
             {importColors.map((color, i) => {
               return (
-                <PaintComponent
-                  key={i}
-                  paint={{
-                    type: 'SOLID',
-                    color: {
-                      r: color.r / 255,
-                      g: color.g / 255,
-                      b: color.b / 255,
-                    },
-                    opacity: color.a,
-                  }}
-                />
+                <Tooltip key={i} title={capitalCase(color.name)}>
+                  <span>
+                    <PaintComponent
+                      paint={{
+                        type: 'SOLID',
+                        color: {
+                          r: color.r / 255,
+                          g: color.g / 255,
+                          b: color.b / 255,
+                        },
+                        opacity: color.a,
+                      }}
+                    />
+                  </span>
+                </Tooltip>
               );
             })}
           </Box>

@@ -18,6 +18,8 @@ import { NotifyMessage, FigmaMessage, MessageTypes } from 'declarations/messages
 import { PLUGIN_ID } from 'declarations/plugin';
 import { CaseTypes, Case, CaseMap } from 'declarations/case';
 import { solidPaintToColor } from 'utils/color';
+import Tooltip from '@mui/material/Tooltip';
+import { getNativeSelectUtilityClasses } from '@mui/material';
 
 export function ExportScreen() {
   const theme = useTheme();
@@ -70,7 +72,17 @@ export function ExportScreen() {
         {hasColorSelection ? (
           <Box display="grid" gridTemplateColumns="repeat(auto-fill, 25px)" gap="5px">
             {selectedPaintStyles.map((style) => {
-              return <PaintComponent key={style.id} paint={style.paints[0]} />;
+              if (!isSolidPaint(style.paints[0])) {
+                return null;
+              }
+
+              return (
+                <Tooltip key={style.id} title={capitalCase(style.name)}>
+                  <span>
+                    <PaintComponent paint={style.paints[0]} />
+                  </span>
+                </Tooltip>
+              );
             })}
           </Box>
         ) : (
