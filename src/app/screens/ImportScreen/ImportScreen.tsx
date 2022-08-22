@@ -4,11 +4,20 @@ import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/joy/Button';
+
+import RadioGroup from '@mui/joy/RadioGroup';
+import Radio from '@mui/joy/Radio';
+
 import Color from 'color';
 import { FigmaMessage, ImportColorsMessage, MessageTypes } from 'declarations/messages';
 import { PLUGIN_ID } from 'declarations/plugin';
 import { ImportColor } from 'declarations/colors';
-import { Paint as PaintComponent, solidPaintToColor } from 'app/components/Paint';
+import { Paint as PaintComponent } from 'app/components/Paint';
+
+import { capitalCase } from 'change-case';
+
+import { theme } from 'utils/theme';
+import { CaseTypes, Case, CaseMap } from 'declarations/case';
 
 const exampleInput = {
   example_color: 'rgb(136, 136, 136)',
@@ -16,6 +25,8 @@ const exampleInput = {
 
 export function ImportScreen() {
   const [input, setInput] = useState<string>(JSON.stringify(exampleInput, null, 2));
+
+  const [caseType, setCaseType] = useState<CaseTypes>(Case.CAPITAL);
 
   const importColors: ImportColor[] = useMemo(() => {
     let ret: ImportColor[] = [];
@@ -80,6 +91,7 @@ export function ImportScreen() {
               pluginMessage: {
                 type: MessageTypes.IMPORT_COLORS,
                 colors: importColors,
+                caseType,
               },
             };
 
@@ -88,6 +100,39 @@ export function ImportScreen() {
         >
           Import
         </Button>
+      </Box>
+
+      <Box sx={{ marginBottom: 2 }}>
+        <Typography level="body1" component="h1" fontWeight="bold" fontSize="12px" id="casing">
+          Casing
+        </Typography>
+
+        <RadioGroup
+          defaultValue={caseType}
+          value={caseType}
+          onChange={(event) => setCaseType(event.target.value as CaseTypes)}
+          aria-labelledby="casing"
+          name="language"
+        >
+          <Box
+            display="grid"
+            gridTemplateColumns="1fr 1fr"
+            gap="5px"
+            marginTop={theme.spacing(1)}
+            marginBottom={theme.spacing(2)}
+          >
+            {Object.keys(CaseMap).map((caseStyle) => {
+              return (
+                <Radio
+                  key={caseStyle}
+                  value={caseStyle}
+                  size="sm"
+                  label={<Typography level="body3">{capitalCase(caseStyle)}</Typography>}
+                />
+              );
+            })}
+          </Box>
+        </RadioGroup>
       </Box>
 
       {importColors?.length > 0 && (

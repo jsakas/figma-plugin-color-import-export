@@ -1,7 +1,7 @@
 import { ImportColorsMessage } from 'declarations/messages';
 import { isFrameNode, isRectangleNode, isSolidPaint, isTextNode } from 'utils/guards';
 import Color from 'color';
-import { capitalCase } from 'change-case';
+import { CaseMap } from 'declarations/case';
 
 const ROWS = 8;
 const COLOR_BLOCK_SIZE = 160;
@@ -11,14 +11,17 @@ export async function importColors(message: ImportColorsMessage) {
   await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
   await figma.loadFontAsync({ family: 'Inter', style: 'Semi Bold' });
 
-  const { colors } = message;
+  const { colors, caseType } = message;
 
+  const caseFn = CaseMap[caseType];
   const allPaintStyles = figma.getLocalPaintStyles();
 
   const styles: PaintStyle[] = [];
 
   for (const c of colors) {
     const { name, r, g, b, a } = c;
+
+    const formattedName = caseFn(name);
 
     const paints: Paint[] = [
       {
@@ -34,7 +37,7 @@ export async function importColors(message: ImportColorsMessage) {
       },
     ];
 
-    const existingStyle = allPaintStyles.find((ps) => ps.name === name);
+    const existingStyle = allPaintStyles.find((ps) => ps.name === formattedName);
 
     if (existingStyle) {
       existingStyle.paints = paints;
@@ -42,7 +45,7 @@ export async function importColors(message: ImportColorsMessage) {
     } else {
       const style = figma.createPaintStyle();
 
-      style.name = name;
+      style.name = formattedName;
       style.paints = paints;
 
       styles.push(style);
@@ -117,6 +120,8 @@ export async function importColors(message: ImportColorsMessage) {
   colorRect.resize(COLOR_BLOCK_SIZE, COLOR_BLOCK_SIZE);
 
   const component = figma.createComponent();
+  component.visible = false;
+  component.name = 'Color Card';
   component.resize(COLOR_BLOCK_SIZE, COLOR_BLOCK_SIZE * 1.5);
   component.appendChild(colorRect);
   component.appendChild(frameNode);
@@ -143,6 +148,8 @@ export async function importColors(message: ImportColorsMessage) {
 
     const componentInstance = component.createInstance();
 
+    componentInstance.name = caseFn(style.name);
+
     componentInstance.x = x * (COLOR_BLOCK_SIZE + COLOR_BLOCK_SPACE);
     componentInstance.y = y * (COLOR_BLOCK_SIZE + COLOR_BLOCK_SPACE);
 
@@ -154,7 +161,7 @@ export async function importColors(message: ImportColorsMessage) {
       const children = componentInstance.children[1].children;
 
       if (isTextNode(children[0])) {
-        children[0].characters = capitalCase(style.name);
+        children[0].characters = caseFn(style.name);
       }
 
       if (isTextNode(children[1])) {

@@ -1,5 +1,3 @@
-import Color from 'color';
-
 export type ImportColor = {
   name: string;
   r: number;

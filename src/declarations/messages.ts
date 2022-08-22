@@ -1,4 +1,5 @@
 import { ImportColor } from './colors';
+import { CaseTypes } from './case';
 
 export enum MessageTypes {
   SET_SELECTED_PAINT_STYLES = 'SET_SELECTED_PAINT_STYLES',
@@ -20,6 +21,7 @@ export interface NotifyMessage {
 export interface ImportColorsMessage {
   type: MessageTypes.IMPORT_COLORS;
   colors: ImportColor[];
+  caseType: CaseTypes;
 }
 
 export type FigmaMessage<T> = {

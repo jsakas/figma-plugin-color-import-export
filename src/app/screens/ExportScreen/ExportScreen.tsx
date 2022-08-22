@@ -8,7 +8,7 @@ import { isSolidPaint } from 'utils/guards';
 import Button from '@mui/joy/Button';
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
-import { Case, CaseMap, CaseTypes, LanguageRecord, Languages, LanguageTypes } from 'declarations/languages';
+import { LanguageRecord, Languages, LanguageTypes } from 'declarations/languages';
 import copy from 'copy-to-clipboard';
 import { capitalCase } from 'change-case';
 
@@ -16,6 +16,7 @@ import RadioGroup from '@mui/joy/RadioGroup';
 import Radio from '@mui/joy/Radio';
 import { NotifyMessage, FigmaMessage, MessageTypes } from 'declarations/messages';
 import { PLUGIN_ID } from 'declarations/plugin';
+import { CaseTypes, Case, CaseMap } from 'declarations/case';
 
 export function ExportScreen() {
   const theme = useTheme();
