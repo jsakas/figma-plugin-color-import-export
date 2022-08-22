@@ -1,6 +1,7 @@
 import { MessageTypes, SetSelectedPaintStylesMessage } from 'declarations/messages';
 import { isRectangleNode } from 'utils/guards';
 import { copyToClipboard } from './handlers/copyToClipboard';
+import { importColors } from './handlers/imporColors';
 
 figma.showUI(__html__, {
   width: 400,
@@ -43,6 +44,8 @@ figma.ui.onmessage = (message) => {
     case MessageTypes.NOTIFY:
       copyToClipboard(message);
       break;
+    case MessageTypes.IMPORT_COLORS:
+      importColors(message);
     default:
       break;
   }

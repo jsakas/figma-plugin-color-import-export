@@ -61,7 +61,7 @@ export function ExportScreen() {
   return (
     <Box width="100%" height="100%">
       <Box sx={{ marginBottom: 2 }}>
-        <Typography level="body2" component="h1" fontWeight="semibold" marginBottom="2">
+        <Typography level="body1" component="h1" fontWeight="bold" fontSize="12px" marginBottom="2">
           Color Selection
         </Typography>
 
@@ -79,7 +79,7 @@ export function ExportScreen() {
       </Box>
 
       <Box sx={{ marginBottom: 2 }}>
-        <Typography level="body2" component="h1" fontWeight="semibold" id="language">
+        <Typography level="body1" component="h1" fontWeight="bold" fontSize="12px" id="language">
           Language
         </Typography>
 
@@ -105,7 +105,7 @@ export function ExportScreen() {
       </Box>
 
       <Box sx={{ marginBottom: 2 }}>
-        <Typography level="body2" component="h1" fontWeight="semibold" id="casing">
+        <Typography level="body1" component="h1" fontWeight="bold" fontSize="12px" id="casing">
           Casing
         </Typography>
 
@@ -191,7 +191,7 @@ export function ExportScreen() {
 
       {hasColorSelection && (
         <Box sx={{ marginBottom: 2 }}>
-          <Typography level="body2" component="h1" fontWeight="semibold" marginBottom="2">
+          <Typography level="body1" component="h1" fontWeight="bold" fontSize="12px" marginBottom="2">
             Preview
           </Typography>
 

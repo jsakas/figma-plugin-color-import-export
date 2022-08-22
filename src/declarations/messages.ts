@@ -1,6 +1,9 @@
+import { ImportColor } from './colors';
+
 export enum MessageTypes {
   SET_SELECTED_PAINT_STYLES = 'SET_SELECTED_PAINT_STYLES',
   NOTIFY = 'NOTIFY',
+  IMPORT_COLORS = 'IMPORT_COLORS',
 }
 
 export interface SetSelectedPaintStylesMessage {
@@ -14,11 +17,16 @@ export interface NotifyMessage {
   options?: NotificationOptions;
 }
 
+export interface ImportColorsMessage {
+  type: MessageTypes.IMPORT_COLORS;
+  colors: ImportColor[];
+}
+
 export type FigmaMessage<T> = {
   pluginId?: string;
   pluginMessage: T;
 };
 
-export type PluginMessage = SetSelectedPaintStylesMessage | NotifyMessage;
+export type PluginMessage = SetSelectedPaintStylesMessage | NotifyMessage | ImportColorsMessage;
 
 export type ParentMessage = FigmaMessage<PluginMessage>;

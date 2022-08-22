@@ -1,13 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './components/App';
-import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
-
-const theme = extendTheme({
-  fontFamily: {
-    body: 'Inter, sans-serif',
-  },
-});
+import { CssVarsProvider } from '@mui/joy/styles';
+import { theme } from 'utils/theme';
 
 function Root() {
   return (
