@@ -11,7 +11,7 @@ import { ImportColor } from 'declarations/colors';
 import { Paint as PaintComponent, solidPaintToColor } from 'app/components/Paint';
 
 const exampleInput = {
-  MY_EXAMPLE_COLOR: 'rgba(0, 0, 0, .75)',
+  example_color: 'rgb(136, 136, 136)',
 };
 
 export function ImportScreen() {
@@ -104,9 +104,9 @@ export function ImportScreen() {
                   paint={{
                     type: 'SOLID',
                     color: {
-                      r: color.r,
-                      g: color.g,
-                      b: color.b,
+                      r: color.r / 255,
+                      g: color.g / 255,
+                      b: color.b / 255,
                     },
                     opacity: color.a,
                   }}

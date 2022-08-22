@@ -16,5 +16,13 @@ export function isImagePaint(paint: Paint): paint is ImagePaint {
 }
 
 export function isRectangleNode(node: SceneNode): node is RectangleNode {
-  return 'fillStyleId' in node;
+  return node.type === 'RECTANGLE';
+}
+
+export function isFrameNode(node: SceneNode): node is FrameNode {
+  return node.type === 'FRAME';
+}
+
+export function isTextNode(node: SceneNode): node is TextNode {
+  return node.type === 'TEXT';
 }
