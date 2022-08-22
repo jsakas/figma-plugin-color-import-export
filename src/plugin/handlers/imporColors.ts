@@ -2,10 +2,13 @@ import { ImportColorsMessage } from 'declarations/messages';
 import { isFrameNode, isRectangleNode, isSolidPaint, isTextNode } from 'utils/guards';
 import Color from 'color';
 import { CaseMap } from 'declarations/case';
+import { solidPaintToColor } from 'app/components/Paint';
 
 const ROWS = 8;
-const COLOR_BLOCK_SIZE = 160;
-const COLOR_BLOCK_SPACE = 20;
+const COLOR_BLOCK_WIDTH = 240;
+const COLOR_BLOCK_HEIGHT = 140;
+const INFO_BLOCK_HEIGHT = 80;
+const COLOR_BLOCK_SPACE = 40;
 
 export async function importColors(message: ImportColorsMessage) {
   await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
@@ -113,16 +116,16 @@ export async function importColors(message: ImportColorsMessage) {
   frameNode.verticalPadding = 8;
   frameNode.itemSpacing = 4;
 
-  frameNode.resize(COLOR_BLOCK_SIZE, COLOR_BLOCK_SIZE * 0.5);
-  frameNode.y = COLOR_BLOCK_SIZE;
+  frameNode.resize(COLOR_BLOCK_WIDTH, INFO_BLOCK_HEIGHT);
+  frameNode.y = COLOR_BLOCK_HEIGHT;
 
   const colorRect = figma.createRectangle();
-  colorRect.resize(COLOR_BLOCK_SIZE, COLOR_BLOCK_SIZE);
+  colorRect.resize(COLOR_BLOCK_WIDTH, COLOR_BLOCK_HEIGHT);
 
   const component = figma.createComponent();
   component.visible = false;
   component.name = 'Color Card';
-  component.resize(COLOR_BLOCK_SIZE, COLOR_BLOCK_SIZE * 1.5);
+  component.resize(COLOR_BLOCK_WIDTH, COLOR_BLOCK_HEIGHT);
   component.appendChild(colorRect);
   component.appendChild(frameNode);
 
@@ -134,11 +137,7 @@ export async function importColors(message: ImportColorsMessage) {
     let color: Color;
 
     if (isSolidPaint(paint)) {
-      color = Color({
-        r: paint.color.r * 255,
-        g: paint.color.g * 255,
-        b: paint.color.b * 255,
-      }).alpha(paint.opacity);
+      color = solidPaintToColor(paint);
     } else {
       continue;
     }
@@ -150,8 +149,8 @@ export async function importColors(message: ImportColorsMessage) {
 
     componentInstance.name = caseFn(style.name);
 
-    componentInstance.x = x * (COLOR_BLOCK_SIZE + COLOR_BLOCK_SPACE);
-    componentInstance.y = y * (COLOR_BLOCK_SIZE + COLOR_BLOCK_SPACE);
+    componentInstance.x = x * (COLOR_BLOCK_WIDTH + COLOR_BLOCK_SPACE);
+    componentInstance.y = y * (COLOR_BLOCK_HEIGHT + INFO_BLOCK_HEIGHT + COLOR_BLOCK_SPACE);
 
     if (isRectangleNode(componentInstance.children[0])) {
       componentInstance.children[0].fillStyleId = style.id;
@@ -165,7 +164,11 @@ export async function importColors(message: ImportColorsMessage) {
       }
 
       if (isTextNode(children[1])) {
-        children[1].characters = color.hex().toString();
+        if (color.alpha() < 1) {
+          children[1].characters = color.hexa().toString();
+        } else {
+          children[1].characters = color.hex().toString();
+        }
       }
 
       if (isTextNode(children[2])) {
