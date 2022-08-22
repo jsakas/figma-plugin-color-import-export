@@ -1,5 +1,5 @@
 {
-  "name": "Import / Export",
+  "name": "Color Import / Export",
   "id": "1142530597327634037",
   "api": "1.0.0",
   "main": "dist/code.js",
