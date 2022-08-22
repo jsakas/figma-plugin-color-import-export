@@ -78,7 +78,7 @@ export const LanguageRecord: LanguageRecord = {
     enabled: false,
     extension: '.js',
     mimeType: 'text/javascript',
-    supportedCaseStyles: [Case.CAMEL, Case.CONSTANT, Case.HEADER, Case.PARAM, Case.SNAKE],
+    supportedCaseStyles: [Case.CAMEL, Case.CONSTANT, Case.SNAKE],
     templateFunction: HandlebarsTemplateJavaScript,
   },
 };
