@@ -12,7 +12,13 @@ function App() {
   useMuiMode();
 
   return (
-    <Tabs aria-label="Select screen" defaultValue={0}>
+    <Tabs
+      aria-label="Select screen"
+      defaultValue={0}
+      sx={{
+        background: 'none',
+      }}
+    >
       <Box marginBottom={1}>
         <TabList size="sm" defaultValue={1}>
           <Tab>Export</Tab>

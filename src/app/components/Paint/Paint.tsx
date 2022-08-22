@@ -1,6 +1,7 @@
-import React from 'react';
-import Color from 'color';
+import React, { useMemo } from 'react';
 import { isSolidPaint } from 'utils/guards';
+import { useColorScheme, useTheme } from '@mui/joy/styles';
+import { solidPaintToColor } from 'utils/color';
 
 type PaintComponentProps = {
   paint: Paint;
@@ -8,18 +9,24 @@ type PaintComponentProps = {
   className?: string;
 };
 
-export function solidPaintToColor(paint: SolidPaint): Color {
-  const alpha = Number(typeof paint.opacity === 'number' ? paint.opacity : 1);
-
-  return Color({
-    r: paint.color.r * 255,
-    g: paint.color.g * 255,
-    b: paint.color.b * 255,
-  }).alpha(Number(alpha.toFixed(2)));
-}
-
 export function Paint(props: PaintComponentProps): JSX.Element {
+  const { mode } = useColorScheme();
+  const theme = useTheme();
   const { paint, style = {}, className } = props;
+
+  const shouldShowBorder = useMemo(() => {
+    if (isSolidPaint(paint)) {
+      if (mode === 'dark') {
+        return paint.color.r < 0.03 && paint.color.g < 0.03 && paint.color.b < 0.03;
+      }
+
+      if (mode === 'light') {
+        return paint.color.r > 0.97 && paint.color.g > 0.97 && paint.color.b > 0.97;
+      }
+    }
+
+    return false;
+  }, [paint]);
 
   if (isSolidPaint(paint)) {
     const backgroundColor = solidPaintToColor(paint).toString();
@@ -32,6 +39,8 @@ export function Paint(props: PaintComponentProps): JSX.Element {
           height: 25,
           borderRadius: '50%',
           backgroundColor,
+          boxSizing: 'border-box',
+          border: shouldShowBorder ? `1px solid ${theme.palette.divider}` : 'none',
           ...style,
         }}
       />

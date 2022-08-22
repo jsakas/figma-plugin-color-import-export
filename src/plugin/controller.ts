@@ -1,4 +1,5 @@
 import { MessageTypes, SetSelectedPaintStylesMessage } from 'declarations/messages';
+import { recurseChildren } from 'utils/figma';
 import { isRectangleNode } from 'utils/guards';
 import { copyToClipboard } from './handlers/copyToClipboard';
 import { importColors } from './handlers/imporColors';
@@ -12,9 +13,13 @@ figma.showUI(__html__, {
 figma.on('selectionchange', () => {
   const paintStyles = figma.getLocalPaintStyles();
 
+  const selectedSceneNodes = Array.from(recurseChildren(figma.currentPage.selection)).filter((node) => {
+    return 'fillStyleId' in node;
+  });
+
   const selectedPaintStyles: PaintStyle[] = paintStyles
     .filter((ps) => {
-      return figma.currentPage.selection.filter(isRectangleNode).find((node) => node.fillStyleId === ps.id);
+      return selectedSceneNodes.filter(isRectangleNode).find((node) => node.fillStyleId === ps.id);
     })
     .map(
       (ps) =>

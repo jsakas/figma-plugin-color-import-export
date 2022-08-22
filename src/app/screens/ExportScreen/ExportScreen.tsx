@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Paint as PaintComponent, solidPaintToColor } from 'app/components/Paint';
+import { Paint as PaintComponent } from 'app/components/Paint';
 import { useTheme } from '@mui/joy/styles';
 
 import { download } from 'utils/download';
@@ -17,6 +17,7 @@ import Radio from '@mui/joy/Radio';
 import { NotifyMessage, FigmaMessage, MessageTypes } from 'declarations/messages';
 import { PLUGIN_ID } from 'declarations/plugin';
 import { CaseTypes, Case, CaseMap } from 'declarations/case';
+import { solidPaintToColor } from 'utils/color';
 
 export function ExportScreen() {
   const theme = useTheme();

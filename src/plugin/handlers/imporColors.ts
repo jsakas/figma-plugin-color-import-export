@@ -2,7 +2,7 @@ import { ImportColorsMessage } from 'declarations/messages';
 import { isFrameNode, isRectangleNode, isSolidPaint, isTextNode } from 'utils/guards';
 import Color from 'color';
 import { CaseMap } from 'declarations/case';
-import { solidPaintToColor } from 'app/components/Paint';
+import { solidPaintToColor } from 'utils/color';
 
 const ROWS = 8;
 const COLOR_BLOCK_WIDTH = 240;
