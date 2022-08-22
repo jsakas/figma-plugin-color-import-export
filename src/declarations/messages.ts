@@ -1,5 +1,6 @@
 export enum MessageTypes {
   SET_SELECTED_PAINT_STYLES = 'SET_SELECTED_PAINT_STYLES',
+  NOTIFY = 'NOTIFY',
 }
 
 export interface SetSelectedPaintStylesMessage {
@@ -7,9 +8,17 @@ export interface SetSelectedPaintStylesMessage {
   styles: PaintStyle[];
 }
 
+export interface NotifyMessage {
+  type: MessageTypes.NOTIFY;
+  message: string;
+  options?: NotificationOptions;
+}
+
 export type FigmaMessage<T> = {
-  pluginId: string;
+  pluginId?: string;
   pluginMessage: T;
 };
 
-export type ParentMessage = FigmaMessage<SetSelectedPaintStylesMessage>;
+export type PluginMessage = SetSelectedPaintStylesMessage | NotifyMessage;
+
+export type ParentMessage = FigmaMessage<PluginMessage>;

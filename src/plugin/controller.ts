@@ -1,5 +1,6 @@
 import { MessageTypes, SetSelectedPaintStylesMessage } from 'declarations/messages';
 import { isRectangleNode } from 'utils/guards';
+import { copyToClipboard } from './handlers/copyToClipboard';
 
 figma.showUI(__html__, {
   width: 400,
@@ -35,6 +36,14 @@ figma.on('selectionchange', () => {
   figma.ui.postMessage(message);
 });
 
-figma.ui.onmessage = (msg) => {
-  console.log('figma.ui.onmessage', msg);
+figma.ui.onmessage = (message) => {
+  console.log('figma.ui.onmessage', message);
+
+  switch (message.type) {
+    case MessageTypes.NOTIFY:
+      copyToClipboard(message);
+      break;
+    default:
+      break;
+  }
 };
