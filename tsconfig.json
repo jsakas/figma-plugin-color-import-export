@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
+    "paths": {
+      "@root/*": ["../*"],
+    },
     "target": "es6",
     "outDir": "dist",
     "jsx": "react",
@@ -8,6 +11,7 @@
     "noImplicitAny": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@figma"

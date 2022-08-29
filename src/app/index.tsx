@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client';
 import App from './components/App';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { theme } from 'utils/theme';
+import { Sentry } from './integrations/Sentry';
+
+import PackageJSON from '@root/package.json';
 
 function Root() {
   return (
@@ -11,6 +14,12 @@ function Root() {
     </CssVarsProvider>
   );
 }
+
+Sentry.captureMessage('Plugin loaded', {
+  tags: {
+    version: PackageJSON.version,
+  },
+});
 
 document.addEventListener('DOMContentLoaded', function () {
   const container = document.getElementById('plugin');

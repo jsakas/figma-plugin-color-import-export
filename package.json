@@ -2,15 +2,15 @@
 	"name": "figma-plugin-color-import-export",
 	"description": "Figma plugin for importing and exporting color tokens",
 	"author": {
-		"name" : "Jon Sakas",
-		"email" : "jon.sakas@gmail.com",
-		"url" : "https://jon.sakas.co"
+		"name": "Jon Sakas",
+		"email": "jon.sakas@gmail.com",
+		"url": "https://jon.sakas.co"
 	},
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
 		"build": "webpack --mode=production",
-		"build:watch": "webpack --mode=development --watch",
+		"dev": "webpack --mode=development --watch",
 		"prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,json}' "
 	},
 	"dependencies": {
@@ -18,6 +18,7 @@
 		"@emotion/styled": "^11.10.0",
 		"@mui/joy": "^5.0.0-alpha.41",
 		"@mui/material": "^5.10.1",
+		"@sentry/react": "^7.11.1",
 		"change-case": "^4.1.2",
 		"color": "^4.2.3",
 		"copy-to-clipboard": "^3.3.2",
@@ -28,6 +29,7 @@
 	},
 	"devDependencies": {
 		"@figma/plugin-typings": "^1.50.0",
+		"@sentry/webpack-plugin": "^1.19.0",
 		"@types/color": "^3.0.3",
 		"@types/react": "^18.0.17",
 		"@types/react-dom": "^18.0.6",

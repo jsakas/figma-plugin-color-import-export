@@ -210,9 +210,13 @@ export function ExportScreen() {
           </Typography>
 
           <code>
-            <pre style={{
-              fontSize: 10,
-            }}>{compiledTemplate}</pre>
+            <pre
+              style={{
+                fontSize: 10,
+              }}
+            >
+              {compiledTemplate}
+            </pre>
           </code>
         </Box>
       )}
