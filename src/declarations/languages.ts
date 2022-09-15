@@ -1,14 +1,3 @@
-import {
-  camelCase,
-  capitalCase,
-  constantCase,
-  dotCase,
-  headerCase,
-  paramCase,
-  pascalCase,
-  snakeCase,
-} from 'change-case';
-
 import Handlebars from 'handlebars';
 
 import TemplateCSS from 'templates/CSS.hbs';
