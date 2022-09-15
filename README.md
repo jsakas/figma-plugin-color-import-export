@@ -18,7 +18,7 @@ Tutorial](https://www.loom.com/share/202ecf92083e4d5788a7522d5fb3004d)**
 - Export selected color styles to JSON, JavaScript, CSS, or Sass
 - Choose between HEX, RGB, or HSL output color models
 - Choose output casing style such as camel case, snake case, and more
-- Preview color export by simply selecting them on the canvas
+- Preview color export by simply selecting objects on the canvas
 
 ## Bugs Reports & Feature Requests
 
