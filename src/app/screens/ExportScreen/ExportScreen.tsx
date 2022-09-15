@@ -17,9 +17,9 @@ import Radio from '@mui/joy/Radio';
 import { NotifyMessage, FigmaMessage, MessageTypes } from 'declarations/messages';
 import { PLUGIN_ID } from 'declarations/plugin';
 import { CaseTypes, Case, CaseMap } from 'declarations/case';
-import { solidPaintToColor } from 'utils/color';
+import { colorToString, solidPaintToColor } from 'utils/color';
 import Tooltip from '@mui/material/Tooltip';
-import { getNativeSelectUtilityClasses } from '@mui/material';
+import { ColorModels, ColorModelType } from 'declarations/models';
 
 export function ExportScreen() {
   const theme = useTheme();
@@ -40,6 +40,8 @@ export function ExportScreen() {
     return CaseMap[languageOptions.supportedCaseStyles[0]];
   }, [caseType, languageOptions, setCaseType]);
 
+  const [model, setModel] = useState<ColorModelType>(ColorModels.RGB);
+
   const hasColorSelection = useMemo(() => selectedPaintStyles?.length > 0, [selectedPaintStyles?.length]);
 
   const styleObject = useMemo(() => {
@@ -47,12 +49,13 @@ export function ExportScreen() {
       const ps = style.paints[0];
 
       if (isSolidPaint(ps)) {
-        acc[caseFn(style.name)] = solidPaintToColor(ps).toString();
+        let result = colorToString(solidPaintToColor(ps), model);
+        acc[caseFn(style.name)] = result;
       }
 
       return acc;
     }, {});
-  }, [selectedPaintStyles, caseFn]);
+  }, [selectedPaintStyles, model, caseFn]);
 
   const compiledTemplate = useMemo(() => {
     if (typeof languageOptions?.templateFunction === 'function') {
@@ -145,6 +148,34 @@ export function ExportScreen() {
                   size="sm"
                   label={<Typography level="body3">{capitalCase(caseStyle)}</Typography>}
                 />
+              );
+            })}
+          </Box>
+        </RadioGroup>
+      </Box>
+
+      <Box sx={{ marginBottom: 2 }}>
+        <Typography level="body1" component="h1" fontWeight="bold" fontSize="12px" id="color-model">
+          Model
+        </Typography>
+
+        <RadioGroup
+          defaultValue={model}
+          value={model}
+          onChange={(event) => setModel(event.target.value as ColorModelType)}
+          aria-labelledby="color-model"
+          name="color-model"
+        >
+          <Box
+            display="grid"
+            gridTemplateColumns="1fr 1fr"
+            gap="5px"
+            marginTop={theme.spacing(1)}
+            marginBottom={theme.spacing(2)}
+          >
+            {Object.keys(ColorModels).map((model) => {
+              return (
+                <Radio key={model} value={model} size="sm" label={<Typography level="body3">{model}</Typography>} />
               );
             })}
           </Box>
