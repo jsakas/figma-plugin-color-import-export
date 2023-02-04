@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
-import TextField from '@mui/material/TextField';
+import Textarea from '@mui/joy/Textarea';
 import Button from '@mui/joy/Button';
 
 import RadioGroup from '@mui/joy/RadioGroup';
@@ -18,14 +18,14 @@ import { capitalCase } from 'change-case';
 
 import { theme } from 'utils/theme';
 import { CaseTypes, Case, CaseMap } from 'declarations/case';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/joy/Tooltip';
 
-const exampleInput = {
+const example = {
   example_color: 'rgb(136, 136, 136)',
 };
 
 export function ImportScreen() {
-  const [input, setInput] = useState<string>(JSON.stringify(exampleInput, null, 2));
+  const [input, setInput] = useState<string>(JSON.stringify(example, null, 2));
 
   const [caseType, setCaseType] = useState<CaseTypes>(Case.CAPITAL);
 
@@ -66,17 +66,14 @@ export function ImportScreen() {
           Input Colors
         </Typography>
 
-        <TextField
-          fullWidth
-          InputProps={{
-            sx: {
-              fontFamily: 'monospace',
-              fontSize: 12,
-            },
+        <Textarea
+          sx={{
+            fontFamily: 'monospace',
+            fontSize: 12,
           }}
           placeholder="Paste color JSON here"
-          rows={5}
-          multiline
+          minRows={5}
+          maxRows={5}
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />

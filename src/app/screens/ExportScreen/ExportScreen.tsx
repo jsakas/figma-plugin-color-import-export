@@ -18,7 +18,7 @@ import { NotifyMessage, FigmaMessage, MessageTypes } from 'declarations/messages
 import { PLUGIN_ID } from 'declarations/plugin';
 import { CaseTypes, Case, CaseMap } from 'declarations/case';
 import { colorToString, solidPaintToColor } from 'utils/color';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/joy/Tooltip';
 import { ColorModels, ColorModelType } from 'declarations/models';
 import { PathHandlingType, PathHandlingTypes } from '@root/src/declarations/path';
 
