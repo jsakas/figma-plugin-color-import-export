@@ -1,0 +1,29 @@
+name: Build Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  
+jobs:
+  deps:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v1
+      
+    - name: Restore Yarn Cache
+      id: cache-deps
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install Dependencies
+      if: steps.cache-deps.outputs.cache-hit != 'true'
+      run: yarn install
+
+    - name: Build
+      run: yarn build
