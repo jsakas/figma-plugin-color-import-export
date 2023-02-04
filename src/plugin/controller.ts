@@ -2,7 +2,7 @@ import { MessageTypes, SetSelectedPaintStylesMessage } from 'declarations/messag
 import { recurseChildren } from 'utils/figma';
 import { isRectangleNode } from 'utils/guards';
 import { copyToClipboard } from './handlers/copyToClipboard';
-import { importColors } from './handlers/imporColors';
+import { importColors } from './handlers/importColors';
 
 figma.showUI(__html__, {
   width: 400,
