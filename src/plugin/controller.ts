@@ -10,7 +10,7 @@ figma.showUI(__html__, {
   themeColors: true,
 });
 
-figma.on('selectionchange', () => {
+function setSelectedPaintStyled() {
   const paintStyles = figma.getLocalPaintStyles();
 
   const selectedSceneNodes = Array.from(recurseChildren(figma.currentPage.selection)).filter((node) => {
@@ -40,6 +40,14 @@ figma.on('selectionchange', () => {
   };
 
   figma.ui.postMessage(message);
+}
+
+figma.on('selectionchange', () => {
+  setSelectedPaintStyled();
+});
+
+figma.on('run', () => {
+  setSelectedPaintStyled();
 });
 
 figma.ui.onmessage = (message) => {
