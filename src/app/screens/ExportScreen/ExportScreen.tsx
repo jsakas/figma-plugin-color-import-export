@@ -4,7 +4,7 @@ import { useTheme } from '@mui/joy/styles';
 
 import { download } from 'utils/download';
 import { useSelectedPaintStyles } from 'app/hooks/useSelectedPaintStyles';
-import { isSolidPaint } from 'utils/guards';
+import { isGradientPaint, isSolidPaint } from 'utils/guards';
 import Button from '@mui/joy/Button';
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
@@ -58,6 +58,14 @@ export function ExportScreen() {
           name = style.name.substring(style.name.lastIndexOf('/') + 1, style.name.length);
         }
         acc[caseFn(name)] = result;
+      }
+
+      if (isGradientPaint(ps)) {
+        // TODO - Implement gradientPaintToString
+        //
+        // See https://github.com/jsakas/figma-plugin-color-import-export/issues/6
+        //
+        // let result = gradientPaintToString(ps, model)
       }
 
       return acc;
