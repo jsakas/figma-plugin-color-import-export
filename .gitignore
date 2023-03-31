@@ -4,3 +4,4 @@ settings.json
 yarn-error.log
 .sentryclirc
 .DS_Store
+.idea/
