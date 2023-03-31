@@ -20,6 +20,7 @@ import { CaseTypes, Case, CaseMap } from 'declarations/case';
 import { colorToString, solidPaintToColor } from 'utils/color';
 import Tooltip from '@mui/material/Tooltip';
 import { ColorModels, ColorModelType } from 'declarations/models';
+import { PathHandlingType, PathHandlingTypes } from '@root/src/declarations/path';
 
 export function ExportScreen() {
   const theme = useTheme();
@@ -42,6 +43,8 @@ export function ExportScreen() {
 
   const [model, setModel] = useState<ColorModelType>(ColorModels.RGB);
 
+  const [pathHandling, setPathHandling] = useState<PathHandlingType>(PathHandlingTypes.KEEP);
+
   const hasColorSelection = useMemo(() => selectedPaintStyles?.length > 0, [selectedPaintStyles?.length]);
 
   const styleObject = useMemo(() => {
@@ -51,7 +54,7 @@ export function ExportScreen() {
       if (isSolidPaint(ps)) {
         let result = colorToString(solidPaintToColor(ps), model);
         let name = style.name;
-        if (style.name.includes('/')) {
+        if (pathHandling == PathHandlingTypes.IGNORE && style.name.includes('/')) {
           name = style.name.substring(style.name.lastIndexOf('/') + 1, style.name.length);
         }
         acc[caseFn(name)] = result;
@@ -59,7 +62,7 @@ export function ExportScreen() {
 
       return acc;
     }, {});
-  }, [selectedPaintStyles, model, caseFn]);
+  }, [selectedPaintStyles, model, caseFn, pathHandling]);
 
   const compiledTemplate = useMemo(() => {
     if (typeof languageOptions?.templateFunction === 'function') {
@@ -180,6 +183,34 @@ export function ExportScreen() {
             {Object.keys(ColorModels).map((model) => {
               return (
                 <Radio key={model} value={model} size="sm" label={<Typography level="body3">{model}</Typography>} />
+              );
+            })}
+          </Box>
+        </RadioGroup>
+      </Box>
+
+      <Box sx={{ marginBottom: 2 }}>
+        <Typography level="body1" component="h1" fontWeight="bold" fontSize="12px" id="color-model">
+          Path
+        </Typography>
+
+        <RadioGroup
+          defaultValue={model}
+          value={pathHandling}
+          onChange={(event) => setPathHandling(event.target.value as PathHandlingType)}
+          aria-labelledby="color-model"
+          name="color-model"
+        >
+          <Box
+            display="grid"
+            gridTemplateColumns="1fr 1fr"
+            gap="5px"
+            marginTop={theme.spacing(1)}
+            marginBottom={theme.spacing(2)}
+          >
+            {Object.keys(PathHandlingTypes).map((path) => {
+              return (
+                <Radio key={path} value={path} size="sm" label={<Typography level="body3">{capitalCase(path)}</Typography>} />
               );
             })}
           </Box>
