@@ -16,8 +16,8 @@
 	"dependencies": {
 		"@emotion/react": "^11.10.0",
 		"@emotion/styled": "^11.10.0",
-		"@mui/joy": "^5.0.0-alpha.41",
-		"@mui/material": "^5.10.1",
+		"@mui/joy": "^5.0.0-alpha.73",
+		"@mui/material": "^5.11.15",
 		"@sentry/react": "^7.11.1",
 		"change-case": "^4.1.2",
 		"color": "^4.2.3",

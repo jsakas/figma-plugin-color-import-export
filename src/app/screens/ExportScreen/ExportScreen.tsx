@@ -50,7 +50,11 @@ export function ExportScreen() {
 
       if (isSolidPaint(ps)) {
         let result = colorToString(solidPaintToColor(ps), model);
-        acc[caseFn(style.name)] = result;
+        let name = style.name;
+        if (style.name.includes('/')) {
+          name = style.name.substring(style.name.lastIndexOf('/') + 1, style.name.length);
+        }
+        acc[caseFn(name)] = result;
       }
 
       return acc;
