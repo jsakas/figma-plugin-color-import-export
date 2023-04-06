@@ -7,6 +7,12 @@ const PackageJSON = require('./package.json');
 
 const path = require('path')
 
+const {
+  SENTRY_ORG, 
+  SENTRY_PROJECT, 
+  SENTRY_AUTH_TOKEN,
+} = process.env
+
 module.exports = (env, argv) => {
   const GA_ENABLED = argv.mode === 'production' ? true : false
   const SENTRY_ENABLED = argv.mode === 'production' ? true : false
@@ -50,7 +56,11 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
-      SENTRY_ENABLED && new SentryCliPlugin({
+      SENTRY_ENABLED && 
+      SENTRY_ORG && 
+      SENTRY_PROJECT && 
+      SENTRY_AUTH_TOKEN &&
+      new SentryCliPlugin({
         include: 'dist',
         ignore: ['node_modules'],
         release: PackageJSON.version,
