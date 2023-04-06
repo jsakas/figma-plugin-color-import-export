@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@root/*": ["../*"],
+      "@mui/material": ["./node_modules/@mui/joy"]
     },
     "target": "es6",
     "outDir": "dist",
@@ -12,9 +12,8 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@figma"
-    ]
-  }
+    "types": ["vitest/globals", "@figma/plugin-typings"],
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

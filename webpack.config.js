@@ -37,6 +37,7 @@ module.exports = (env, argv) => {
       extensions: ['.tsx', '.ts', '.jsx', '.js'],
 
       alias: {
+        '@mui/material': '@mui/joy',
         'react': path.resolve('./node_modules/react'),
         'react-dom': path.resolve('./node_modules/react-dom'),
         'handlebars': path.resolve('./node_modules/handlebars/dist/handlebars.min.js'),
