@@ -5,8 +5,6 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import { theme } from 'utils/theme';
 import { Sentry } from './integrations/Sentry';
 
-import PackageJSON from '@root/package.json';
-
 function Root() {
   return (
     <CssVarsProvider theme={theme}>
@@ -17,7 +15,7 @@ function Root() {
 
 Sentry.captureMessage('Plugin loaded', {
   tags: {
-    version: PackageJSON.version,
+    version: PACKAGE_VERSION,
   },
 });
 
