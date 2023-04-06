@@ -20,7 +20,7 @@ import { CaseTypes, Case, CaseMap } from 'declarations/case';
 import { colorToString, solidPaintToColor } from 'utils/color';
 import Tooltip from '@mui/joy/Tooltip';
 import { ColorModels, ColorModelType } from 'declarations/models';
-import { PathHandlingType, PathHandlingTypes } from '@root/src/declarations/path';
+import { PathHandlingType, PathHandlingTypes } from 'declarations/path';
 
 export function ExportScreen() {
   const theme = useTheme();
@@ -218,7 +218,12 @@ export function ExportScreen() {
           >
             {Object.keys(PathHandlingTypes).map((path) => {
               return (
-                <Radio key={path} value={path} size="sm" label={<Typography level="body3">{capitalCase(path)}</Typography>} />
+                <Radio
+                  key={path}
+                  value={path}
+                  size="sm"
+                  label={<Typography level="body3">{capitalCase(path)}</Typography>}
+                />
               );
             })}
           </Box>

@@ -1,8 +1,9 @@
 import { ImportColorsMessage } from 'declarations/messages';
-import { isFrameNode, isRectangleNode, isSolidPaint, isTextNode } from 'utils/guards';
-import Color from 'color';
 import { CaseMap } from 'declarations/case';
-import { solidPaintToColor } from 'utils/color';
+import { createColorCardComponent } from '../utils/createColorCardComponent';
+import { createPaintStyle } from '../utils/createPaintStyle';
+import { createColorCardComponentInstance } from '../utils/createComponentInstance';
+import { getOrCreateGroupStack } from '../utils/getOrCreateGroupStack';
 
 const ROWS = 8;
 const COLOR_BLOCK_WIDTH = 240;
@@ -17,167 +18,56 @@ export async function importColors(message: ImportColorsMessage) {
   const { colors, caseType } = message;
 
   const caseFn = CaseMap[caseType];
-  const allPaintStyles = figma.getLocalPaintStyles();
 
-  const styles: PaintStyle[] = [];
+  const component = createColorCardComponent({
+    colorBlockWidth: COLOR_BLOCK_WIDTH,
+    colorBlockHeight: COLOR_BLOCK_HEIGHT,
+    infoBlockHeight: INFO_BLOCK_HEIGHT,
+  });
 
-  for (const c of colors) {
-    const { name, r, g, b, a } = c;
+  const nodes: InstanceNode[] = [];
 
-    const formattedName = caseFn(name);
+  for (const [i, color] of colors.entries()) {
+    try {
+      const x = i % ROWS;
+      const y = Math.floor(i / ROWS);
 
-    const paints: Paint[] = [
-      {
-        type: 'SOLID',
-        visible: true,
-        opacity: a,
-        blendMode: 'NORMAL',
-        color: {
-          r: r / 255,
-          g: g / 255,
-          b: b / 255,
-        },
-      },
-    ];
+      const paintStyle = createPaintStyle(color, caseFn);
+      const groupStack = getOrCreateGroupStack(color.cardPath);
+      const componentInstance = createColorCardComponentInstance(caseFn(color.name), paintStyle, component);
 
-    const existingStyle = allPaintStyles.find((ps) => ps.name === formattedName);
+      componentInstance.x = x * (COLOR_BLOCK_WIDTH + COLOR_BLOCK_SPACE);
+      componentInstance.y = y * (COLOR_BLOCK_HEIGHT + INFO_BLOCK_HEIGHT + COLOR_BLOCK_SPACE);
 
-    if (existingStyle) {
-      existingStyle.paints = paints;
-      styles.push(existingStyle);
-    } else {
-      const style = figma.createPaintStyle();
+      let componentToAppend: GroupNode | InstanceNode = componentInstance;
 
-      style.name = formattedName;
-      style.paints = paints;
+      for (const groupRef of groupStack) {
+        if (groupRef.ref) {
+          groupRef.ref.appendChild(componentToAppend);
 
-      styles.push(style);
-    }
-  }
-
-  const primaryFill: Paint = {
-    type: 'SOLID',
-    color: {
-      r: 0,
-      g: 0,
-      b: 0,
-    },
-  };
-
-  const secondaryFill: Paint = {
-    type: 'SOLID',
-    color: {
-      r: 0.53,
-      g: 0.53,
-      b: 0.53,
-    },
-  };
-
-  const colorTitle = figma.createText();
-  colorTitle.fills = [primaryFill];
-  colorTitle.fontName = { family: 'Inter', style: 'Semi Bold' };
-  colorTitle.fontSize = 14;
-  colorTitle.lineHeight = {
-    value: 20,
-    unit: 'PIXELS',
-  };
-
-  const colorHex = figma.createText();
-  colorHex.fills = [secondaryFill];
-  colorHex.fontName = { family: 'Inter', style: 'Semi Bold' };
-  colorHex.fontSize = 12;
-  colorHex.lineHeight = {
-    value: 16,
-    unit: 'PIXELS',
-  };
-
-  const colorRgb = figma.createText();
-  colorRgb.fills = [secondaryFill];
-  colorRgb.fontName = { family: 'Inter', style: 'Semi Bold' };
-  colorRgb.fontSize = 12;
-  colorRgb.lineHeight = {
-    value: 16,
-    unit: 'PIXELS',
-  };
-
-  colorTitle.characters = 'Color Title';
-  colorHex.characters = 'Color HEX';
-  colorRgb.characters = 'Color RGB';
-
-  const frameNode = figma.createFrame();
-
-  frameNode.appendChild(colorTitle);
-  frameNode.appendChild(colorHex);
-  frameNode.appendChild(colorRgb);
-
-  frameNode.layoutMode = 'VERTICAL';
-  frameNode.layoutAlign = 'STRETCH';
-  frameNode.horizontalPadding = 8;
-  frameNode.verticalPadding = 8;
-  frameNode.itemSpacing = 4;
-
-  frameNode.resize(COLOR_BLOCK_WIDTH, INFO_BLOCK_HEIGHT);
-  frameNode.y = COLOR_BLOCK_HEIGHT;
-
-  const colorRect = figma.createRectangle();
-  colorRect.resize(COLOR_BLOCK_WIDTH, COLOR_BLOCK_HEIGHT);
-
-  const component = figma.createComponent();
-  component.visible = false;
-  component.name = 'Color Card';
-  component.resize(COLOR_BLOCK_WIDTH, COLOR_BLOCK_HEIGHT);
-  component.appendChild(colorRect);
-  component.appendChild(frameNode);
-
-  const nodes = [];
-
-  for (const [i, style] of styles.entries()) {
-    const paint = style.paints[0];
-
-    let color: Color;
-
-    if (isSolidPaint(paint)) {
-      color = solidPaintToColor(paint);
-    } else {
-      continue;
-    }
-
-    const x = i % ROWS;
-    const y = Math.floor(i / ROWS);
-
-    const componentInstance = component.createInstance();
-
-    componentInstance.name = caseFn(style.name);
-
-    componentInstance.x = x * (COLOR_BLOCK_WIDTH + COLOR_BLOCK_SPACE);
-    componentInstance.y = y * (COLOR_BLOCK_HEIGHT + INFO_BLOCK_HEIGHT + COLOR_BLOCK_SPACE);
-
-    if (isRectangleNode(componentInstance.children[0])) {
-      componentInstance.children[0].fillStyleId = style.id;
-    }
-
-    if (isFrameNode(componentInstance.children[1])) {
-      const children = componentInstance.children[1].children;
-
-      if (isTextNode(children[0])) {
-        children[0].characters = caseFn(style.name);
-      }
-
-      if (isTextNode(children[1])) {
-        if (color.alpha() < 1) {
-          children[1].characters = color.hexa().toString();
+          componentToAppend = groupRef.ref;
         } else {
-          children[1].characters = color.hex().toString();
+          const newGroup = figma.group([componentToAppend], figma.currentPage);
+
+          newGroup.name = groupRef.name;
+
+          componentToAppend = newGroup;
         }
       }
 
-      if (isTextNode(children[2])) {
-        children[2].characters = color.rgb().toString();
-      }
-    }
+      figma.currentPage.appendChild(componentToAppend);
 
-    figma.currentPage.appendChild(componentInstance);
-    nodes.push(componentInstance);
+      nodes.push(componentInstance);
+    } catch (e) {
+      console.error(e);
+      // TODO - The Sentry code seems to cause a crash in Figma
+      //
+      // figma_app.min.js.br:5 Error: Syntax error on line 401: Unexpected token ...
+      // at WAo (figma_app.min.js.br:1520:98)
+      // at async figma_app.min.js.br:1650:6868
+      //
+      // Sentry.captureException(e)
+    }
   }
 
   figma.currentPage.selection = nodes;
