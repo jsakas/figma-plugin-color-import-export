@@ -7,9 +7,26 @@ import Tab from '@mui/joy/Tab';
 import TabPanel from '@mui/joy/TabPanel';
 import { ImportScreen } from 'app/screens/ImportScreen';
 import Box from '@mui/joy/Box';
+import { PLUGIN_ID } from 'declarations/plugin';
+import { FigmaMessage, MessageTypes, RequestSelectedPainStylesMessage } from 'declarations/messages';
+
+function requestSelectedPaintStyles() {
+  const message: FigmaMessage<RequestSelectedPainStylesMessage> = {
+    pluginId: PLUGIN_ID,
+    pluginMessage: {
+      type: MessageTypes.REQUEST_SELECTED_PAINT_STYLES,
+    },
+  };
+
+  parent.postMessage(message, 'https://www.figma.com');
+}
 
 function App() {
   useMuiMode();
+
+  function onTabChange() {
+    requestSelectedPaintStyles();
+  }
 
   return (
     <Tabs
@@ -21,8 +38,8 @@ function App() {
     >
       <Box marginBottom={1}>
         <TabList size="sm" defaultValue={1}>
-          <Tab>Export</Tab>
-          <Tab>Import</Tab>
+          <Tab onChange={onTabChange}>Export</Tab>
+          <Tab onChange={onTabChange}>Import</Tab>
         </TabList>
       </Box>
       <TabPanel value={0}>
