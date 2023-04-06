@@ -11,6 +11,7 @@ Tutorial](https://www.loom.com/share/202ecf92083e4d5788a7522d5fb3004d)**
 ### Import
 
 - Import color styles into Figma from JSON objects
+- Supports grouping color styles and color cards by folders
 - Preview imported colors in real time
 
 ### Export
