@@ -59,6 +59,8 @@ figma.ui.onmessage = (message) => {
       break;
     case MessageTypes.IMPORT_COLORS:
       importColors(message);
+    case MessageTypes.REQUEST_SELECTED_PAINT_STYLES:
+      setSelectedPaintStyled();
     default:
       break;
   }
