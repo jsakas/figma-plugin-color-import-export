@@ -59,6 +59,7 @@ module.exports = (env, argv) => {
       new DefinePlugin({
         'SENTRY_ENABLED': GA_ENABLED,
         'GA_ENABLED': SENTRY_ENABLED,
+        'PACKAGE_VERSION': JSON.stringify(PackageJSON.version),
       }),
       new HtmlWebpackPlugin({
         template: './src/app/index.ejs',
