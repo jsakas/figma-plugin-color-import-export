@@ -4,4 +4,6 @@ export type ImportColor = {
   g: number;
   b: number;
   a: number;
+  stylePath?: string;
+  cardPath: string;
 };

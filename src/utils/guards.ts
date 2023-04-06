@@ -26,3 +26,7 @@ export function isFrameNode(node: SceneNode): node is FrameNode {
 export function isTextNode(node: SceneNode): node is TextNode {
   return node.type === 'TEXT';
 }
+
+export function isGroupNode(node: SceneNode): node is GroupNode {
+  return node.type === 'GROUP';
+}
