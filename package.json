@@ -6,7 +6,7 @@
 		"email": "jon.sakas@gmail.com",
 		"url": "https://jon.sakas.co"
 	},
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"license": "MIT",
 	"scripts": {
 		"build": "webpack --mode=production",
