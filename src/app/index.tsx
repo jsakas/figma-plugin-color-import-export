@@ -4,11 +4,16 @@ import App from './components/App';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { theme } from 'utils/theme';
 import { Sentry } from './integrations/Sentry';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import CssBaseline from '@mui/joy/CssBaseline';
 
 function Root() {
   return (
     <CssVarsProvider theme={theme}>
-      <App />
+      <CssBaseline />
+      <ErrorBoundary onError={Sentry.captureException}>
+        <App />
+      </ErrorBoundary>
     </CssVarsProvider>
   );
 }

@@ -79,6 +79,7 @@ export function buildImportColors(inputObject: Record<string, any>, options: Bui
 }
 
 export function ImportScreen() {
+  const [error, setError] = useState<string>();
   const [input, setInput] = useState<string>(JSON.stringify(example, null, 2));
   const [groupColorStyles, setGroupColorStyles] = useState<boolean>(false);
   const [groupColorCards, setGroupColorCards] = useState<boolean>(false);
@@ -86,19 +87,30 @@ export function ImportScreen() {
   const caseFn = CaseMap[caseType];
 
   const importColors: ImportColor[] = useMemo(() => {
-    const inputObject = JSON.parse(input) as Record<string, any>;
+    if (input?.length) {
+      try {
+        const inputObject = JSON.parse(input) as Record<string, any>;
 
-    return buildImportColors(inputObject, { groupColorStyles, groupColorCards });
+        return buildImportColors(inputObject, { groupColorStyles, groupColorCards });
+      } catch (e) {
+        console.error(e);
+
+        setError(e.message);
+      }
+    }
+
+    return [];
   }, [input, groupColorStyles, groupColorCards]);
 
   return (
     <Box width="100%" height="100%">
-      <Box sx={{ marginBottom: 2 }}>
+      <Box width="100%" sx={{ marginBottom: 2 }}>
         <Typography level="body1" component="h1" fontWeight="bold" fontSize="12px" marginBottom="2">
           Input Colors
         </Typography>
 
         <Textarea
+          error={Boolean(error)}
           sx={{
             fontFamily: 'monospace',
             fontSize: 12,
@@ -107,8 +119,17 @@ export function ImportScreen() {
           minRows={5}
           maxRows={5}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setError(undefined);
+            setInput(e.target.value);
+          }}
         />
+
+        {error && (
+          <Typography color="danger" level="body3">
+            {error}
+          </Typography>
+        )}
       </Box>
 
       <Box sx={{ marginBottom: 2 }}>

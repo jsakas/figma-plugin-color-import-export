@@ -50,6 +50,14 @@ figma.on('run', () => {
   setSelectedPaintStyled();
 });
 
+function restartPlugin() {
+  figma.showUI(__html__, {
+    width: 400,
+    height: 600,
+    themeColors: true,
+  });
+}
+
 figma.ui.onmessage = (message) => {
   console.log('figma.ui.onmessage', message);
 
@@ -59,8 +67,13 @@ figma.ui.onmessage = (message) => {
       break;
     case MessageTypes.IMPORT_COLORS:
       importColors(message);
+      break;
     case MessageTypes.REQUEST_SELECTED_PAINT_STYLES:
       setSelectedPaintStyled();
+      break;
+    case MessageTypes.RESTART_PLUGIN:
+      restartPlugin();
+      break;
     default:
       break;
   }
