@@ -34,6 +34,7 @@ function App() {
       defaultValue={0}
       sx={{
         background: 'none',
+        padding: '8px',
       }}
     >
       <Box marginBottom={1}>
