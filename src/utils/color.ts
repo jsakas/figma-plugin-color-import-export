@@ -14,9 +14,9 @@ export function solidPaintToColor(paint: SolidPaint): Color {
 export function colorToString(color: Color, model: ColorModelType = ColorModels.RGB) {
   switch (model) {
     case 'HSL':
-      return color.hsl().string();
+      return color.hsl().string(0);
     case 'RGB':
-      return color.rgb().string();
+      return color.rgb().string(0);
     case 'HEX':
       const hex = color.hexa();
       if (hex.length === 9 && hex.substring(7, 9) === 'FF') {

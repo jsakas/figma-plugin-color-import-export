@@ -49,23 +49,23 @@ export function ExportScreen() {
 
   const styleObject = useMemo(() => {
     return selectedPaintStyles.reduce((acc, style) => {
-      const ps = style.paints[0];
-
-      if (isSolidPaint(ps)) {
-        let result = colorToString(solidPaintToColor(ps), model);
-        let name = style.name;
-        if (pathHandling == PathHandlingTypes.IGNORE && style.name.includes('/')) {
-          name = style.name.substring(style.name.lastIndexOf('/') + 1, style.name.length);
+      for (const ps of style.paints) {
+        if (isSolidPaint(ps)) {
+          let result = colorToString(solidPaintToColor(ps), model);
+          let name = style.name;
+          if (pathHandling == PathHandlingTypes.IGNORE && style.name.includes('/')) {
+            name = style.name.substring(style.name.lastIndexOf('/') + 1, style.name.length);
+          }
+          acc[caseFn(name)] = result;
         }
-        acc[caseFn(name)] = result;
-      }
 
-      if (isGradientPaint(ps)) {
-        // TODO - Implement gradientPaintToString
-        //
-        // See https://github.com/jsakas/figma-plugin-color-import-export/issues/6
-        //
-        // let result = gradientPaintToString(ps, model)
+        if (isGradientPaint(ps)) {
+          // TODO - Implement gradientPaintToString
+          //
+          // See https://github.com/jsakas/figma-plugin-color-import-export/issues/6
+          //
+          // let result = gradientPaintToString(ps, model)
+        }
       }
 
       return acc;
