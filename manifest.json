@@ -4,6 +4,20 @@
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "dist/ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://*.sentry.io",
+      "https://*.googleapis.com",
+      "https://*.gstatic.com",
+      "https://*.googletagmanager.com"
+    ],
+    "devAllowedDomains": [
+      "https://*.sentry.io",
+      "https://*.googleapis.com",
+      "https://*.gstatic.com",
+      "https://*.googletagmanager.com"
+    ]
+  },
   "editorType": [
     "figma"
   ]
