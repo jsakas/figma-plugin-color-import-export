@@ -3,7 +3,7 @@ import { CaseTypes } from './case';
 
 export enum MessageTypes {
   REQUEST_SELECTED_PAINT_STYLES = 'REQUEST_SELECTED_PAINT_STYLES',
-  SET_SELECTED_PAINT_STYLES = 'SET_SELECTED_PAINT_STYLES',
+  SET_SELECTED_COLORS = 'SET_SELECTED_COLORS',
   NOTIFY = 'NOTIFY',
   IMPORT_COLORS = 'IMPORT_COLORS',
   RESTART_PLUGIN = 'RESTART_PLUGIN',
@@ -13,9 +13,11 @@ export interface RequestSelectedPainStylesMessage {
   type: MessageTypes.REQUEST_SELECTED_PAINT_STYLES;
 }
 
-export interface SetSelectedPaintStylesMessage {
-  type: MessageTypes.SET_SELECTED_PAINT_STYLES;
+export interface SetSelectedColorsMessage {
+  type: MessageTypes.SET_SELECTED_COLORS;
   styles: PaintStyle[];
+  variables: Variable[];
+  modes: VariableCollection[];
 }
 
 export interface NotifyMessage {
@@ -39,6 +41,6 @@ export type FigmaMessage<T> = {
   pluginMessage: T;
 };
 
-export type PluginMessage = SetSelectedPaintStylesMessage | NotifyMessage | ImportColorsMessage | RestartPluginMessage;
+export type PluginMessage = SetSelectedColorsMessage | NotifyMessage | ImportColorsMessage | RestartPluginMessage;
 
 export type ParentMessage = FigmaMessage<PluginMessage>;

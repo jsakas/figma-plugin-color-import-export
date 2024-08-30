@@ -3,7 +3,7 @@ import { Paint as PaintComponent } from 'app/components/Paint';
 import { useTheme } from '@mui/joy/styles';
 
 import { download } from 'utils/download';
-import { useSelectedPaintStyles } from 'app/hooks/useSelectedPaintStyles';
+import { useSelectedColors } from 'app/hooks/useSelectedColors';
 import { isGradientPaint, isSolidPaint } from 'utils/guards';
 import Button from '@mui/joy/Button';
 import Typography from '@mui/joy/Typography';
@@ -25,7 +25,11 @@ import { PathHandlingType, PathHandlingTypes } from 'declarations/path';
 export function ExportScreen() {
   const theme = useTheme();
 
-  const selectedPaintStyles = useSelectedPaintStyles();
+  const { paintStyles, variables, modes } = useSelectedColors();
+
+  console.log('paintStyles', paintStyles);
+  console.log('variables', variables);
+  console.log('modes', modes);
 
   const [language, setLanguage] = useState<LanguageTypes>(Languages.JSON);
   const languageOptions = useMemo(() => LanguageRecord[language], [language]);
@@ -45,10 +49,10 @@ export function ExportScreen() {
 
   const [pathHandling, setPathHandling] = useState<PathHandlingType>(PathHandlingTypes.KEEP);
 
-  const hasColorSelection = useMemo(() => selectedPaintStyles?.length > 0, [selectedPaintStyles?.length]);
+  const hasColorSelection = useMemo(() => paintStyles?.length > 0, [paintStyles?.length]);
 
   const styleObject = useMemo(() => {
-    return selectedPaintStyles.reduce((acc, style) => {
+    const obj1 = paintStyles.reduce<Record<string, string>>((acc, style) => {
       for (const ps of style.paints) {
         if (isSolidPaint(ps)) {
           let result = colorToString(solidPaintToColor(ps), model);
@@ -70,7 +74,14 @@ export function ExportScreen() {
 
       return acc;
     }, {});
-  }, [selectedPaintStyles, model, caseFn, pathHandling]);
+
+    const obj2 = variables.reduce((acc, variable) => {
+      console.log('variable', variable);
+      return acc;
+    }, obj1);
+
+    return obj2;
+  }, [paintStyles, model, caseFn, pathHandling]);
 
   const compiledTemplate = useMemo(() => {
     if (typeof languageOptions?.templateFunction === 'function') {
@@ -89,7 +100,7 @@ export function ExportScreen() {
 
         {hasColorSelection ? (
           <Box display="grid" gridTemplateColumns="repeat(auto-fill, 25px)" gap="5px">
-            {selectedPaintStyles.map((style) => {
+            {paintStyles.map((style) => {
               if (!isSolidPaint(style.paints[0])) {
                 return null;
               }
